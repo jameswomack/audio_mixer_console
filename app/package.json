@@ -1,0 +1,25 @@
+{
+  "name": "MediaServer",
+  "version": "0.0.1",
+  "description": "Serving Audio Files for Consumption via AudioContext",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jameswomack/The-Noble-Gesture-Media-Server"
+  },
+  "keywords": [
+    "audiocontext",
+    "express.js",
+    "static",
+    "file",
+    "server"
+  ],
+  "author": "James J. Womack",
+  "license": "BSD",
+  "dependencies": {
+    "express": "~3.2.6"
+  }
+}
