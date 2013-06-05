@@ -1,20 +1,20 @@
 var piano = new Audio();
 piano.src = "http://james.local:3013/media/an_act_that_no_one_else_can_follow/separate_tracks/electric_piano.wav";
-piano.title = "piano"
+piano.title = "Piano";
 
 var synth = new Audio();
 synth.src = "http://james.local:3013/media/an_act_that_no_one_else_can_follow/separate_tracks/synth.wav";
-synth.title = "synth"
+synth.title = "Synth";
 
 var perc = new Audio();
 perc.src = "http://james.local:3013/media/an_act_that_no_one_else_can_follow/separate_tracks/percussion.wav";
-perc.title = "perc"
+perc.title = "Perc";
 
 var insts = [piano, synth, perc];
 
 var defaultFadeDuration = 3;
 
-var millisecondsPerSecond = 1000;
+var millisecondsPerSecond = 1000.0;
 
 var isDefined = function(obj)
 {
@@ -87,6 +87,11 @@ var quickForward = function()
 	sync(forwardTo);
 }
 
+var getTitleizedTitle = function(el, title)
+{
+	return $(el).attr('title').titleize();
+}
+
 var volumate = function(inst, instVolume, shouldAnimate, fadeDuration)
 {
 	if(isUndefined(fadeDuration))
@@ -94,27 +99,20 @@ var volumate = function(inst, instVolume, shouldAnimate, fadeDuration)
 		fadeDuration = defaultFadeDuration;
 	}
 	
-	var title = $(inst).attr('title');
+	var title = getTitleizedTitle(inst);
 	var slider = idElTitled(title);
-	var spans = spanElTitled(title);
+	var spans = spanElClassed(title);
 	var instVolumeInHundredths = instVolume*100.0;
 	
 	if(shouldAnimate)
 	{
-		$(inst).animate({volume:instVolume}, fadeDuration * millisecondsPerSecond);
-		slider.slider('option', 'animate', fadeDuration * millisecondsPerSecond);
+		$(inst).animate({volume:instVolume}, mil(fadeDuration));
+		slider.slider('option', 'animate', mil(fadeDuration));
 		
 		// TODO - enable cancelling this animation, as it gets out of sync when
 		// other options are chosen while it's animating
-		$({text: inst.volume*100.0}).animate({text: instVolumeInHundredths}, {
-			duration: fadeDuration * millisecondsPerSecond,
-			easing:'swing',
-			step: function()
-			{
-				var text = Math[(this.text < 1)?"floor":"ceil"](this.text);
-				spans.text(String(text));
-			}
-		});
+		// var tweenText = function(inst, instVolume, fadeDuration)
+		tweenText(inst, instVolume, fadeDuration);
 	}
 	else
 	{
@@ -174,16 +172,17 @@ var fadeOutAll = function(_inst)
 	isolate(null, true);
 }
 
-var idElTitled = function(phrase)
+var idElTitled = function(idName)
 {
-	var el = $("#"+String(phrase));
-	el[0].setAttribute('title',phrase);
+	idName = String(idName).camelize(false);
+	var el = $("#"+idName);
+	el[0].setAttribute('title',idName.titleize());
 	return el;
 }
 
-var spanElTitled = function(phrase)
+var spanElClassed = function(className)
 {
-	var el = $("span."+String(phrase));
+	var el = $("span."+String(className).toLowerCase());
 	return el;
 }
 
@@ -191,7 +190,7 @@ var audioElByTitle = function(title)
 {
 	return insts.find(function(_inst)
 			{
-				return _inst.title === title;
+				return _inst.title === title.titleize();
 			});
 }
 
@@ -209,6 +208,52 @@ var elOn = function(el)
 var elOff = function(el, value)
 {
 	volumeForEl(el, 0);
+}
+
+var ctx = function(o,fn)
+{
+	(fn).apply(o);
+}
+
+ctx(Math, function(){
+	this.tramp = function (n) {
+		return this[ (n < 1) ? 'floor' : 'ceil' ](n);
+	};
+});
+
+var cien = function(volume)
+{
+	return Number(volume) * 100.0;
+}
+
+var mil = function(volume)
+{
+	return Number(volume) * millisecondsPerSecond;
+}
+
+var tweenText = function(inst, instVolume, fadeDuration)
+{
+	if(isUndefined(inst) || isUndefined(instVolume))
+	{
+		throw new Error("undefined sent to tweenText");
+		return;
+	}
+	else if(isUndefined(fadeDuration))
+	{
+		fadeDuration = defaultFadeDuration;
+	}
+	
+	var instVolumeInHundredths = cien(instVolume);
+	var spans = spanElClassed(getTitleizedTitle(inst));
+	$({text: cien(inst.volume)}).animate({text: instVolumeInHundredths}, {
+		duration: fadeDuration * millisecondsPerSecond,
+		easing:'swing',
+		step: function()
+		{
+			var text = Math.tramp(this.text);
+			spans.text(String(text));
+		}
+	});
 }
 
 var sliderDefaults = {
@@ -229,12 +274,24 @@ $(function() {
 		  
 		  slide: function(event,ui) 
 		  {
-			insts.find(function(_inst)
+			var title = event.target.id.titleize();			
+			
+			var spans = spanElClassed(title);
+			
+			if(event.originalEvent.type === 'mousedown')
 			{
-				return _inst.title === event.target.id;
-			}).volume = ui.value/100.0;
-		  }
-		  
+				$(inst).animate({volume:Number(ui.value/100.0)}, mil(defaultFadeDuration));
+				tweenText(inst, Number(ui.value/100.0));
+			}
+			else if(event.originalEvent.type === 'mousemove')
+			{
+				insts.find(function(_inst)
+				{
+					return _inst.title === title;
+				}).volume = ui.value/100.0;
+				spans.text(String(ui.value));
+			}
+		 } 
 		}));
 	});
 	
