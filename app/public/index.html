@@ -14,7 +14,11 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+		<script src="js/vendor/sugar-1.3.9.min.js"></script>
+		
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -22,9 +26,64 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <p>Hello world! This is HTML5 Boilerplate.</p>
-
+        <h1>.James Gloss' Mixboard.</h1>
+		
+		<p>
+			<button id="play_button" onclick="play()">Play</button>
+			<button id="pause_button" onclick="pause()">Pause</button>
+			<button id="stop_button" onclick="stop()">Stop</button>
+			<span> | </span>
+			<button id="show_all_button" onclick="showAll()">Unmute All</button>
+			<button id="hide_all_button" onclick="hideAll()">Mute All</button>
+		</p>
+		
+		<div class="third">
+			<h2>Perc</h2>
+			<p>
+				<button class="isolate_button" title="perc">Solo</button>
+				<button class="invert_isolate_button" title="perc">Invert Solo</button>
+				<button class="hide_button" title="perc">Mute</button>
+				<button class="show_button" title="perc">Unmute</button>
+			</p>
+			<p>
+				<label for="amount">Volume:</label>
+				<span class="perc" name="amount">100</span>
+			</p>
+			<div id="perc" class="volume_cont"></div>
+		</div>
+		
+		<div class="third">
+			<h2>Piano</h2>
+			<p>
+				<button class="isolate_button" title="piano">Solo</button>
+				<button class="invert_isolate_button" title="piano">Invert Solo</button>
+				<button class="hide_button" title="piano">Mute</button>
+				<button class="show_button" title="piano">Unmute</button>
+			</p>
+			<p>
+				<label for="amount">Volume:</label>
+				<span class="piano" name="amount">100</span>
+			</p>
+			<div id="piano" class="volume_cont"></div>
+		</div>
+		
+		<div class="third">
+			<h2>Synth</h2>
+			<p>
+				<button class="isolate_button" title="synth">Solo</button>
+				<button class="invert_isolate_button" title="synth">Invert Solo</button>
+				<button class="hide_button" title="synth">Mute</button>
+				<button class="show_button" title="synth">Unmute</button>
+			</p>
+			<p>
+				<label for="amount">Volume:</label>
+				<span class="synth" name="amount">100</span>
+			</p>
+			<div id="synth" class="volume_cont"></div>
+		</div>
+		
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
