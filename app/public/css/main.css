@@ -301,21 +301,30 @@ textarea {
 
 
 /* NOBILITY */
+html
+{
+  background-image: url('http://james.local:3013/img/mexico.jpg');
+  background-color: black;
+  color: white;
+  text-shadow: 0px 2px #000;
+  font-family: 'Helvetica Neue';
+}
+
 body
 {
-	text-align: center;
+  text-align: center;
 }
 
 .third
 {
-	width: 33%;
-	box-sizing: border-box;
-	float: left;
-	padding: 12px;
+  width: 33%;
+  box-sizing: border-box;
+  float: left;
+  padding: 12px;
 }
 
 .volume_cont
 {
-	height: 200px;
-	margin: 0px auto;
+  height: 200px;
+  margin: 0px auto;
 }

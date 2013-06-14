@@ -1,0 +1,37 @@
+[{
+  "JMES":0.1,
+  "party": [
+    {
+      "name": "Ana"
+    }
+  ],
+  "signatures":[
+    {
+      "time":"2013-06-07T03:04:17.056Z"
+    }
+  ],
+  "devices":[
+    {
+      "name":"Play",
+      "type":"Button"
+    },
+    {
+      "name":"Fader 1",
+      "type":"Fader"
+    }
+  ],
+  "events":[
+    {
+      "device": 0,
+      "value": 1,
+      "time": 0
+    },
+    {
+      "device": 1,
+      "value": 1,
+      "time": 2.4,
+      "animated": true,
+      "tween": 2
+    }
+  ]
+}]
